@@ -1,20 +1,77 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import checked from '../layout/checked-checkbox.png';
+import unchecked from '../layout/unchecked-checkbox.png';
 import ContactContext from '../../context/contact/ContactContext';
 
-const ContactItem = ({ contact }) => {
+const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
   const contactContext = useContext(ContactContext);
   const { deleteContact, setCurrent, clearCurrent } = contactContext;
 
   const { _id, name, email, phone, type } = contact;
 
+  const [isSelected, setIsSelected] = useState(false);
+  const [selected, setSelected] = useState([]);
+
+  console.log('selectedProp: ', selectedProp);
+  console.log('isSelected: ', isSelected);
+  console.log('selected: ', selected);
+
+  useEffect(() => {
+    setIsSelected(selectedProp);
+  }, [selectedProp]);
+
+  useEffect(() => {
+    isSelected
+      ? setSelected(prevSelected => [...prevSelected, _id])
+      : setSelected([]);
+  }, [isSelected]);
+
+  useEffect(() => {
+    totalSelectedProp(selected);
+  }, [selected]);
+
+  const handleSelect = () => setIsSelected(prevIsSelected => !prevIsSelected);
+
   const handleDelete = () => {
     deleteContact(_id);
     clearCurrent();
   };
+
   return (
     <div className='card bg-light'>
       <h3 className='text-primary text-left'>
+        {isSelected ? (
+          <a href='#!' onClick={handleSelect}>
+            <img
+              src={checked}
+              alt='checked'
+              style={{
+                width: '20px',
+                height: '20px',
+                margin: 'auto',
+                marginBottom: '5px',
+                marginRight: '5px',
+                verticalAlign: 'middle'
+              }}
+            />
+          </a>
+        ) : (
+          <a href='#!' onClick={handleSelect}>
+            <img
+              src={unchecked}
+              alt='unchecked'
+              style={{
+                width: '20px',
+                height: '20px',
+                margin: 'auto',
+                marginBottom: '5px',
+                marginRight: '5px',
+                verticalAlign: 'middle'
+              }}
+            />
+          </a>
+        )}
         {name}{' '}
         <span
           style={{ float: 'right' }}
