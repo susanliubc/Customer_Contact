@@ -6,6 +6,7 @@ import {
   GET_CONTACT,
   ADD_CONTACT,
   DELETE_CONTACT,
+  BULK_DELETE_CONTACT,
   SET_CURRENT,
   CLEAR_CURRENT,
   UPDATE_CONTACT,
@@ -59,6 +60,25 @@ const ContactState = props => {
       await axios.delete(`./api/contacts/:${id}`);
 
       dispatch({ type: DELETE_CONTACT, payload: id });
+    } catch (err) {
+      dispatch({ type: CONTACT_ERROR, payload: err.response.msg });
+    }
+  };
+
+  //Bulk delete contact
+  const bulkDeleteContact = async ids => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      await axios.delete('./api/contacts/', ids, config);
+      console.log('before json ids: ', ids);
+      console.log('after json ids: ', JSON.parse(ids));
+      console.log('ids.id: ', JSON.parse(ids).id);
+      dispatch({ type: BULK_DELETE_CONTACT, payload: JSON.parse(ids) });
     } catch (err) {
       dispatch({ type: CONTACT_ERROR, payload: err.response.msg });
     }
@@ -120,6 +140,7 @@ const ContactState = props => {
         getContact,
         addContact,
         deleteContact,
+        bulkDeleteContact,
         setCurrent,
         clearCurrent,
         updateContact,

@@ -1,6 +1,7 @@
 export const GET_CONTACT = 'GET_CONTACT';
 export const ADD_CONTACT = 'ADD_CONTACT';
 export const DELETE_CONTACT = 'DELETE_CONTACT';
+export const BULK_DELETE_CONTACT = 'BULK_DELETE_CONTACT';
 export const SET_CURRENT = 'SET_CURRENT';
 export const CLEAR_CURRENT = 'CLEAR_CURRENT';
 export const UPDATE_CONTACT = 'UPDATE_CONTACT';

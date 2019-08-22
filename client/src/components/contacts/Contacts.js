@@ -9,7 +9,13 @@ import ContactContext from '../../context/contact/ContactContext';
 const Contacts = () => {
   const contactContext = useContext(ContactContext);
 
-  const { contacts, filtered, getContact, loading } = contactContext;
+  const {
+    contacts,
+    filtered,
+    getContact,
+    bulkDeleteContact,
+    loading
+  } = contactContext;
 
   const [isChecked, setIsChecked] = useState(false);
   const [checked, setChecked] = useState([]);
@@ -50,8 +56,8 @@ const Contacts = () => {
   }, [isChecked]);
 
   const handleCheck = () => {
-    setIsChecked(prevIsChecked => !prevIsChecked);
-    setIsSelected(prevIsSelected => !prevIsSelected);
+    setIsChecked(!isChecked);
+    setIsSelected(!isSelected);
   };
 
   const handleTotalSelect = item => {
@@ -65,8 +71,24 @@ const Contacts = () => {
     setBulkAction(e.target.value);
   };
 
-  const handleSubmit = () => {
-    console.log('submit');
+  const handleSubmit = e => {
+    e.preventDefault();
+    let resIds;
+    if (bulkAction === 'bulk delete' && checked.length !== 0) {
+      const checkedIds = { id: checked };
+      resIds = JSON.stringify(checkedIds);
+      console.log('resIds: ', resIds);
+      bulkDeleteContact(resIds);
+      setChecked([]);
+      setIsChecked(false);
+    } else if (bulkAction === 'bulk delete' && totalSelected.length !== 0) {
+      const totalSelectedIds = { id: totalSelected };
+      resIds = JSON.stringify(totalSelectedIds);
+      console.log('resIds: ', resIds);
+      bulkDeleteContact(resIds);
+      setTotalSelected([]);
+      setIsSelected(false);
+    }
   };
 
   if (contacts === !null && contacts.length === 0 && !loading)

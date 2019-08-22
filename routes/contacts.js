@@ -122,4 +122,29 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
+//@route         BULK DELETE api/contacts
+//desc           Bulk delete contacts
+//@access        Private
+router.delete('/', auth, async (req, res) => {
+  try {
+    let contacts = await Contact.find({ _id: { $in: req.body.id } });
+
+    //Make sure user owns contact
+    contacts.map(contact => {
+      if (!contact) return res.status(404).json({ msg: 'Contact not found' });
+
+      if (contact.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'Not authorized' });
+      }
+    });
+
+    await Contact.deleteMany({ _id: { $in: req.body.id } });
+
+    res.json({ msg: 'Bulk contacts removed' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
