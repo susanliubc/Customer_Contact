@@ -68,16 +68,15 @@ const ContactState = props => {
   //Bulk delete contact
   const bulkDeleteContact = async ids => {
     const config = {
+      data: ids,
       headers: {
         'Content-Type': 'application/json'
       }
     };
 
     try {
-      await axios.delete('./api/contacts/', ids, config);
-      console.log('before json ids: ', ids);
-      console.log('after json ids: ', JSON.parse(ids));
-      console.log('ids.id: ', JSON.parse(ids).id);
+      await axios.delete('./api/contacts/', config);
+
       dispatch({ type: BULK_DELETE_CONTACT, payload: JSON.parse(ids) });
     } catch (err) {
       dispatch({ type: CONTACT_ERROR, payload: err.response.msg });

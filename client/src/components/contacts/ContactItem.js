@@ -13,10 +13,6 @@ const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
   const [isSelected, setIsSelected] = useState(false);
   const [selected, setSelected] = useState([]);
 
-  console.log('selectedProp: ', selectedProp);
-  console.log('isSelected: ', isSelected);
-  console.log('selected: ', selected);
-
   useEffect(() => {
     setIsSelected(selectedProp);
   }, [selectedProp]);
@@ -31,7 +27,7 @@ const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
     totalSelectedProp(selected);
   }, [selected]);
 
-  const handleSelect = () => setIsSelected(prevIsSelected => !prevIsSelected);
+  const handleSelect = () => setIsSelected(!isSelected);
 
   const handleDelete = () => {
     deleteContact(_id);
@@ -43,33 +39,11 @@ const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
       <h3 className='text-primary text-left'>
         {isSelected ? (
           <a href='#!' onClick={handleSelect}>
-            <img
-              src={checked}
-              alt='checked'
-              style={{
-                width: '20px',
-                height: '20px',
-                margin: 'auto',
-                marginBottom: '5px',
-                marginRight: '5px',
-                verticalAlign: 'middle'
-              }}
-            />
+            <img src={checked} alt='checked' style={checkboxStyle} />
           </a>
         ) : (
           <a href='#!' onClick={handleSelect}>
-            <img
-              src={unchecked}
-              alt='unchecked'
-              style={{
-                width: '20px',
-                height: '20px',
-                margin: 'auto',
-                marginBottom: '5px',
-                marginRight: '5px',
-                verticalAlign: 'middle'
-              }}
-            />
+            <img src={unchecked} alt='unchecked' style={checkboxStyle} />
           </a>
         )}
         {name}{' '}
@@ -112,6 +86,15 @@ const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
 
 ContactItem.propTypes = {
   contact: PropTypes.object.isRequired
+};
+
+const checkboxStyle = {
+  width: '20px',
+  height: '20px',
+  margin: 'auto',
+  marginBottom: '5px',
+  marginRight: '5px',
+  verticalAlign: 'middle'
 };
 
 export default ContactItem;
