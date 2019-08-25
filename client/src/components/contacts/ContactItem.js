@@ -39,11 +39,11 @@ const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
       <h3 className='text-primary text-left'>
         {isSelected ? (
           <a href='#!' onClick={handleSelect}>
-            <img src={checked} alt='checked' style={checkboxStyle} />
+            <img src={checked} alt='checked' className='checkbox' />
           </a>
         ) : (
           <a href='#!' onClick={handleSelect}>
-            <img src={unchecked} alt='unchecked' style={checkboxStyle} />
+            <img src={unchecked} alt='unchecked' className='checkbox' />
           </a>
         )}
         {name}{' '}
@@ -86,15 +86,6 @@ const ContactItem = ({ contact, selectedProp, totalSelectedProp }) => {
 
 ContactItem.propTypes = {
   contact: PropTypes.object.isRequired
-};
-
-const checkboxStyle = {
-  width: '20px',
-  height: '20px',
-  margin: 'auto',
-  marginBottom: '5px',
-  marginRight: '5px',
-  verticalAlign: 'middle'
 };
 
 export default ContactItem;

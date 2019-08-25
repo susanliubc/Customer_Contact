@@ -89,11 +89,11 @@ const Contacts = () => {
           <span>Select all </span>
           {isChecked ? (
             <a href='#!' onClick={handleCheck}>
-              <img src={checkedicon} alt='checked' style={checkboxStyle} />
+              <img src={checkedicon} alt='checked' className='checkbox' />
             </a>
           ) : (
             <a href='#!' onClick={handleCheck}>
-              <img src={unchecked} alt='unchecked' style={checkboxStyle} />
+              <img src={unchecked} alt='unchecked' className='checkbox' />
             </a>
           )}
           <form onSubmit={handleSubmit}>
@@ -128,12 +128,4 @@ const Contacts = () => {
   );
 };
 
-const checkboxStyle = {
-  width: '20px',
-  height: '20px',
-  margin: 'auto',
-  marginBottom: '5px',
-  marginRight: '5px',
-  verticalAlign: 'middle'
-};
 export default Contacts;
