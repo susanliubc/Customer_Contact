@@ -3,6 +3,7 @@ import {
   ADD_CONTACT,
   DELETE_CONTACT,
   BULK_DELETE_CONTACT,
+  BULK_DELETE_FILTERED_CONTACT,
   CLEAR_CONTACT,
   CONTACT_ERROR,
   SET_CURRENT,
@@ -36,6 +37,17 @@ export default (state, action) => {
     case BULK_DELETE_CONTACT:
       return {
         ...state,
+        contacts: state.contacts.filter(
+          contact => !action.payload.id.includes(contact._id)
+        ),
+        loading: false
+      };
+    case BULK_DELETE_FILTERED_CONTACT:
+      return {
+        ...state,
+        filtered: state.contacts.filter(
+          contact => !action.payload.id.includes(contact._id)
+        ),
         contacts: state.contacts.filter(
           contact => !action.payload.id.includes(contact._id)
         ),

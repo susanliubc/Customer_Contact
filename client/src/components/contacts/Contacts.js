@@ -18,7 +18,6 @@ const Contacts = () => {
   } = contactContext;
 
   const [isChecked, setIsChecked] = useState(false);
-  // const [checked, setChecked] = useState([]);
 
   const [isSelected, setIsSelected] = useState(false);
   const [totalSelected, setTotalSelected] = useState([]);
@@ -29,21 +28,6 @@ const Contacts = () => {
     getContact();
     //eslint-disable-next-line
   }, []);
-
-  // useEffect(() => {
-  //   if (isChecked && filtered !== null) {
-  //     filtered.map(contact =>
-  //       setChecked(prevChecked => [...prevChecked, contact._id])
-  //     );
-  //   } else if (isChecked && filtered === null) {
-  //     contacts.map(contact =>
-  //       setChecked(prevChecked => [...prevChecked, contact._id])
-  //     );
-  //   } else if (!isChecked) {
-  //     setChecked([]);
-  //   }
-  //   //eslint-disable-next-line
-  // }, [isChecked]);
 
   const handleCheck = () => {
     setIsChecked(!isChecked);
@@ -64,17 +48,25 @@ const Contacts = () => {
   const handleSubmit = e => {
     e.preventDefault();
     let resIds;
-    // if (bulkAction === 'bulk delete' && checked.length !== 0) {
-    //   const checkedIds = { id: checked };
-    //   resIds = JSON.stringify(checkedIds);
-    //   bulkDeleteContact(resIds);
-    //   setChecked([]);
-    //   setIsChecked(false);
-    // } else
-    if (bulkAction === 'bulk delete' && totalSelected.length !== 0) {
+
+    if (
+      bulkAction === 'bulk delete' &&
+      filtered.length === 0 &&
+      totalSelected.length !== 0
+    ) {
       const totalSelectedIds = { id: totalSelected };
       resIds = JSON.stringify(totalSelectedIds);
       bulkDeleteContact(resIds);
+      setTotalSelected([]);
+      setIsSelected(false);
+    } else if (
+      bulkAction === 'bulk delete' &&
+      filtered.length !== 0 &&
+      totalSelected.length !== 0
+    ) {
+      const totalSelectedIds = { id: totalSelected };
+      resIds = JSON.stringify(totalSelectedIds);
+      bulkDeleteFilteredContact(resIds);
       setTotalSelected([]);
       setIsSelected(false);
     }
@@ -109,7 +101,11 @@ const Contacts = () => {
           {filtered !== null
             ? filtered.map(contact => (
                 <CSSTransition key={contact._id} timeout={500} className='item'>
-                  <ContactItem contact={contact} selectedProp={isSelected} />
+                  <ContactItem
+                    contact={contact}
+                    selectedProp={isSelected}
+                    totalSelectedProp={handleTotalSelect}
+                  />
                 </CSSTransition>
               ))
             : contacts.map(contact => (
